@@ -14,4 +14,9 @@ public class AuthServiceImpl implements AuthService {
         return false;
     }
 
+    @Override
+    public boolean isExist(User user) {
+        return false;
+    }
+
 }
