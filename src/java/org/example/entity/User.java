@@ -1,15 +1,46 @@
-package org.example.model;
+package org.example.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
-public class User {
+@Entity
+@Table(name = "people")
+public class User extends AbstractModel<Integer> {
 
+    @Id
+    @Column(name = "USER_ID")
+    private Integer id;
+
+    @Column(name = "LOGIN")
     private String login;
+
+    @Column(name = "PASSWORD")
     private String password;
+
+    @Column(name = "FIRST_NAME")
     private String firstName;
+
+    @Column(name = "LAST_NAME")
     private String lastName;
+
+    @Column(name = "CREATION_DATE")
     private LocalDateTime creationDate;
-    private long groupId;
+
+    @Column(name = "GROUP_ID")
+    private int groupId;
+    private List<UserAttribute> attributes;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -47,16 +78,20 @@ public class User {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public long getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(long groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public List<UserAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<UserAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
@@ -64,12 +99,13 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return login.equals(user.login);
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
         int result = login.hashCode();
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + password.hashCode();
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
